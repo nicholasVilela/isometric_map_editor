@@ -77,7 +77,7 @@ fn setup_camera(world: &mut World) {
 }
 
 fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
-    let tile_render = SpriteRender::new(sprite_sheet_handle, 1);
+    let tile_render = SpriteRender::new(sprite_sheet_handle, 0);
 
     let (map_height, map_width) = get_map_dimensions(world);
     let (tile_height, tile_width) = get_tile_dimensions(world);
@@ -86,8 +86,8 @@ fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
         for y in 0..map_height.floor() as isize {
             let mut transform = Transform::default();
 
-            let tile_x_position = (x as f32 * (tile_width / 2.0)) + (y as f32 * -(tile_height / 2.0)) + 160.0;
-            let tile_y_position = (x as f32 * (tile_width / 4.0)) + (y as f32 * (tile_height / 4.0)) + 90.0;
+            let tile_x_position = (x as f32 * (tile_width / 2.0)) + (y as f32 * -(tile_height / 2.0));
+            let tile_y_position = (x as f32 * (tile_width / 4.0)) + (y as f32 * (tile_height / 4.0));
             transform.set_translation_xyz(tile_x_position, tile_y_position, 0.0);
 
             world.create_entity()

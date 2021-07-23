@@ -11,8 +11,10 @@ use amethyst::{
             TransformBundle,
         },
     },
-    // input::{InputBundle, StringBindings},
+    input::{InputBundle, StringBindings},
 };
+
+mod systems;
 
 mod game;
 use game::GameState;
@@ -23,6 +25,7 @@ fn main() -> amethyst::Result<()> {
 
     let app_root = application_root_dir()?;
     let config_display_dir = app_root.join("config/display.ron");
+    let config_binding_dir = app_root.join("config/bindings.ron");
     let assets_dir = app_root.join("assets/");
 
     let game_data = GameDataBuilder::default()
@@ -34,7 +37,9 @@ fn main() -> amethyst::Result<()> {
                 )
                 .with_plugin(RenderFlat2D::default())
         )?
-        .with_bundle(TransformBundle::new())?;
+        .with_bundle(InputBundle::<StringBindings>::new().with_bindings_from_file(config_binding_dir)?)?
+        .with_bundle(TransformBundle::new())?
+        .with(systems::CameraMovementSystem::default(), "camera_movement_system", &["input_system"]);
 
     let mut game = Application::new(assets_dir, GameState::default(), game_data)?;
 

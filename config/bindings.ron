@@ -1,0 +1,17 @@
+(
+    axes: {
+        "mouse_x": Mouse(
+            axis: X,
+            over_extendable: true,
+            radius: 1.0
+        ),
+        "mouse_y": Mouse(
+            axis: Y,
+            over_extendable: true,
+            radius: 1.0
+        ),
+    },
+    actions: {
+      "mouse_middle": [[Mouse(Middle)]],
+    },
+)
