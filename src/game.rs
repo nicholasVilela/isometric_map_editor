@@ -64,14 +64,14 @@ fn setup_config(world: &mut World) {
 fn setup_camera(world: &mut World) {
     let (map_height, map_width) = get_map_dimensions(world);
     let (tile_height, tile_width) = get_tile_dimensions(world);
-    let board_pixel_width = map_width * tile_width;
-    let board_pixel_height = map_height * tile_height;
+    let map_pixel_width = map_width * tile_width;
+    let map_board_width = map_height * tile_height;
 
     let mut transform = Transform::default();
-    transform.set_translation_xyz(board_pixel_width * 0.5, board_pixel_height * 0.5, 1.0);
+    transform.set_translation_xyz(map_pixel_width * 0.5, map_board_width * 0.5, 1.0);
 
     world.create_entity()
-        .with(Camera::standard_2d(board_pixel_width, board_pixel_height))
+        .with(Camera::standard_2d(map_pixel_width, map_board_width))
         .with(transform)
         .build();
 }
