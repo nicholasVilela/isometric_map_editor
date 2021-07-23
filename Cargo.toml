@@ -1,0 +1,10 @@
+[package]
+name = "isometric_map_editor"
+version = "0.1.0"
+edition = "2018"
+
+
+[dependencies]
+amethyst = {version = "0.15.3", features = ["vulkan"]}
+serde = { version = "1.0", features = ["derive"] }
+rayon = "1.5"

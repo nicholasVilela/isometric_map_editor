@@ -1,0 +1,4 @@
+(
+  title: "Isometric Map Editor",
+  dimensions: Some((800, 800)),
+)
