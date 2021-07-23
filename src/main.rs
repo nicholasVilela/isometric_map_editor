@@ -14,6 +14,9 @@ use amethyst::{
     // input::{InputBundle, StringBindings},
 };
 
+mod game;
+use game::GameState;
+
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
@@ -32,6 +35,10 @@ fn main() -> amethyst::Result<()> {
                 .with_plugin(RenderFlat2D::default())
         )?
         .with_bundle(TransformBundle::new())?;
+
+    let mut game = Application::new(assets_dir, GameState::default(), game_data)?;
+
+    game.run();
 
     Ok(())
 }
