@@ -15,12 +15,17 @@ use amethyst::{
         ImageFormat,
         SpriteSheetFormat,
         Texture,
-    }
+        SpriteRender,
+    },
 };
 
 #[path = "./config.rs"]
 mod config;
 use config::GameConfig;
+
+#[path = "./tile.rs"]
+mod tile;
+use tile::Tile;
 
 
 #[derive(Default)]
@@ -31,6 +36,8 @@ pub struct GameState {
 impl SimpleState for GameState {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let mut world = data.world;
+
+        world.register::<Tile>();
 
         self.sprite_sheet_handle
             .replace(load_sprite_sheet(world));
@@ -70,9 +77,27 @@ fn setup_camera(world: &mut World) {
 }
 
 fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
+    let tile_render = SpriteRender::new(sprite_sheet_handle, 1);
 
+    let (map_height, map_width) = get_map_dimensions(world);
+    let (tile_height, tile_width) = get_tile_dimensions(world);
+
+    for x in 0..map_width.floor() as isize {
+        for y in 0..map_height.floor() as isize {
+            let mut transform = Transform::default();
+
+            let tile_x_position = (x as f32 * (tile_width / 2.0)) + (y as f32 * -(tile_height / 2.0)) + 160.0;
+            let tile_y_position = (x as f32 * (tile_width / 4.0)) + (y as f32 * (tile_height / 4.0)) + 90.0;
+            transform.set_translation_xyz(tile_x_position, tile_y_position, 0.0);
+
+            world.create_entity()
+                .with(Tile::new(x, y))
+                .with(tile_render.clone())
+                .with(transform)
+                .build();
+        }
+    }
 }
-
 
 fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
     let loader = world.read_resource::<Loader>();
