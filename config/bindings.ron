@@ -10,8 +10,13 @@
             over_extendable: true,
             radius: 1.0
         ),
+        "mouse_wheel": MouseWheel(
+            horizontal: false,
+        ),
     },
     actions: {
       "mouse_middle": [[Mouse(Middle)]],
+      "mouse_left_click": [[Mouse(Left)]],
+      "mouse_right_click": [[Mouse(Right)]],
     },
 )

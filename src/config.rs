@@ -31,9 +31,25 @@ impl Default for TileConfig {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct WindowConfig {
+    pub height: f32,
+    pub width: f32,
+}
+
+impl Default for WindowConfig {
+    fn default() -> Self {
+        return WindowConfig {
+            height: 100.0,
+            width: 100.0,
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct GameConfig {
     pub map: MapConfig,
     pub tile: TileConfig,
+    pub window: WindowConfig,
 }
 
 impl Default for GameConfig {
@@ -41,6 +57,7 @@ impl Default for GameConfig {
         return GameConfig {
             map: MapConfig::default(),
             tile: TileConfig::default(),
+            window: WindowConfig::default(),
         }
     }
 }

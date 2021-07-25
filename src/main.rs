@@ -1,6 +1,9 @@
 use amethyst::{
     prelude::*,
-    utils::application_root_dir,
+    utils::{
+        application_root_dir,
+        fps_counter::FpsCounterBundle,
+    },
     renderer::{
         plugins::{RenderFlat2D, RenderToWindow},
         types::DefaultBackend,
@@ -39,7 +42,9 @@ fn main() -> amethyst::Result<()> {
         )?
         .with_bundle(InputBundle::<StringBindings>::new().with_bindings_from_file(config_binding_dir)?)?
         .with_bundle(TransformBundle::new())?
-        .with(systems::CameraMovementSystem::default(), "camera_movement_system", &["input_system"]);
+        .with_bundle(FpsCounterBundle::default())?
+        .with(systems::CameraMovementSystem::default(), "camera_movement_system", &["input_system",])
+        .with(systems::ActionControllerSystem::default(), "tile_edit_system", &["input_system",]);
 
     let mut game = Application::new(assets_dir, GameState::default(), game_data)?;
 
