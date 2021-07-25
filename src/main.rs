@@ -44,7 +44,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(FpsCounterBundle::default())?
         .with(systems::CameraMovementSystem::default(), "camera_movement_system", &["input_system",])
-        .with(systems::ActionControllerSystem::default(), "tile_edit_system", &["input_system",]);
+        .with(systems::ActionControllerSystem::default(), "action_controller_system", &["input_system",]);
 
     let mut game = Application::new(assets_dir, GameState::default(), game_data)?;
 

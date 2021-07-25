@@ -61,7 +61,7 @@ impl SimpleState for GameState {
 
         let fps = world.read_resource::<FpsCounter>();
 
-        // println!("FPS: {:?}", fps.frame_fps());
+        println!("FPS: {:?}", fps.frame_fps());
 
         return Trans::None;
     }
@@ -105,8 +105,6 @@ fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
             let tile_x_position = (x as f32 * (tile_width / 2.0)) + (y as f32 * -(tile_height / 2.0));
             let tile_y_position = (x as f32 * (tile_width / 4.0)) + (y as f32 * (tile_height / 4.0));
             transform.set_translation_xyz(tile_x_position, tile_y_position, 0.0);
-
-            println!("{:?}", transform.translation());
 
             world.create_entity()
                 .with(Tile::new(x, y))

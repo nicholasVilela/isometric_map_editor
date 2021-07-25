@@ -1,7 +1,7 @@
 (
     map: (
-        height: 1.0,
-        width: 2.0,
+        height: 4.0,
+        width: 4.0,
     ),
     tile: (
         height: 32.0,
