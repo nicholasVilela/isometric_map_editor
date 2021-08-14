@@ -1,14 +1,14 @@
 (
     map: (
-        height: 4.0,
-        width: 4.0,
+        height: 3.0,
+        width : 3.0,
     ),
     tile: (
-        height: 32.0,
-        width: 32.0,
+        height: 16.0,
+        width : 32.0,
     ),
     window: (
         height: 100.0,
-        width: 100.0,
+        width : 100.0,
     )
 )

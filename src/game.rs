@@ -6,6 +6,7 @@ use amethyst::{
             FpsCounter
         }
     },
+    ui::{UiText, FontAsset, LineMode, Anchor, TtfFormat, UiTransform},
     core::{
         transform::Transform,
     },
@@ -27,13 +28,20 @@ use amethyst::{
     },
 };
 
-#[path = "./config.rs"]
-mod config;
-use config::GameConfig;
-
 #[path = "./tile.rs"]
 pub mod tile;
 pub use tile::Tile;
+
+#[path = "./util.rs"]
+pub mod util;
+pub use util::{
+    map_to_screen,
+    screen_to_map,
+    get_map_dimensions, 
+    get_tile_dimensions, 
+    get_window_dimensions,
+    config::{GameConfig, TileConfig},
+};
 
 
 #[derive(Default)]
@@ -50,6 +58,8 @@ impl SimpleState for GameState {
         self.sprite_sheet_handle
             .replace(load_sprite_sheet(world));
 
+        world.insert(self.sprite_sheet_handle.clone());
+
         setup_config(world);
         setup_fps_counter(world);
         setup_camera(world);
@@ -58,10 +68,6 @@ impl SimpleState for GameState {
 
     fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
         let mut world = &data.world;
-
-        let fps = world.read_resource::<FpsCounter>();
-
-        println!("FPS: {:?}", fps.frame_fps());
 
         return Trans::None;
     }
@@ -78,13 +84,45 @@ fn setup_config(world: &mut World) {
 
 fn setup_fps_counter(world: &mut World) {
     world.insert(FpsCounter::default());
+    world.insert(AssetStorage::<FontAsset>::default());
+
+
+    let font_handle = world.read_resource::<Loader>().load(
+        "font/square.ttf",
+        TtfFormat,
+        (),
+        &world.read_resource(),
+    );
+
+    let ui_transform = UiTransform::new(
+        String::from("fps"),
+        Anchor::TopLeft,
+        Anchor::TopLeft,
+        0f32,
+        0f32,
+        0f32,
+        40f32,
+        30f32,
+    );
+
+    world.create_entity()
+        .with(UiText::new(
+            font_handle,
+            String::from(""),
+            [1.0, 1.0, 1.0, 1.0],
+            25f32,
+            LineMode::Single,
+            Anchor::Middle
+        ))
+        .with(ui_transform)
+        .build();
 }
 
 fn setup_camera(world: &mut World) {
     let (window_height, window_width) = get_window_dimensions(world);
 
     let mut transform = Transform::default();
-    transform.set_translation_xyz(window_width * 0.5, window_height * 0.5, 1.0);
+    transform.set_translation_xyz(0.0, 0.0, 1.0);
 
     world.create_entity()
         .with(Camera::standard_2d(window_width, window_height))
@@ -92,24 +130,53 @@ fn setup_camera(world: &mut World) {
         .build();
 }
 
-fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
-    let tile_render = SpriteRender::new(sprite_sheet_handle, 0);
+fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {  
+    let tile_render = SpriteRender::new(sprite_sheet_handle, 1);
 
     let (map_height, map_width) = get_map_dimensions(world);
-    let (tile_height, tile_width) = get_tile_dimensions(world);
+    let tile = get_tile_config(world);
 
-    for x in 0..map_width.floor() as isize {
-        for y in 0..map_height.floor() as isize {
+    let font_handle = world.read_resource::<Loader>().load(
+        "font/square.ttf",
+        TtfFormat,
+        (),
+        &world.read_resource(),
+    );
+
+    for y in 0..map_height.floor() as isize {
+        for x in 0..map_width.floor() as isize {
             let mut transform = Transform::default();
 
-            let tile_x_position = (x as f32 * (tile_width / 2.0)) + (y as f32 * -(tile_height / 2.0));
-            let tile_y_position = (x as f32 * (tile_width / 4.0)) + (y as f32 * (tile_height / 4.0));
-            transform.set_translation_xyz(tile_x_position, tile_y_position, 0.0);
+            let tile_iso_position = map_to_screen(x as i32, y as i32, tile.width, tile.height);
+            println!("{:?}", tile_iso_position);
+            transform.set_translation_xyz(tile_iso_position.x, tile_iso_position.y, 0.0);
+
+            let ui_text = UiText::new(
+                font_handle.clone(),
+                String::from(""),
+                [1.0, 1.0, 1.0, 1.0],
+                15f32,
+                LineMode::Single,
+                Anchor::Middle
+            );
+
+            let ui_transform = UiTransform::new(
+                format!("tile({:?},{:?})", x, y),
+                Anchor::Middle,
+                Anchor::Middle,
+                0f32,
+                0f32,
+                0f32,
+                100f32,
+                100f32,
+            );
 
             world.create_entity()
                 .with(Tile::new(x, y))
                 .with(tile_render.clone())
                 .with(transform)
+                .with(ui_text)
+                .with(ui_transform)
                 .build();
         }
     }
@@ -122,7 +189,7 @@ fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
 
         loader.load(
-            "textures/sprite_sheet.png",
+            "textures/sprite_sheet_2.png",
             ImageFormat::default(),
             (),
             &texture_storage,
@@ -131,27 +198,15 @@ fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
 
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     return loader.load(
-        "textures/sprite_sheet.ron",
+        "textures/sprite_sheet_2.ron",
         SpriteSheetFormat(texture_handle),
         (),
         &sprite_sheet_store,
     )
 }
 
-fn get_map_dimensions(world: &mut World) -> (f32, f32) {
+fn get_tile_config(world: &mut World) -> TileConfig {
     let config = world.read_resource::<GameConfig>();
 
-    return (config.map.height, config.map.width);
-}
-
-fn get_tile_dimensions(world: &mut World) -> (f32, f32) {
-    let config = world.read_resource::<GameConfig>();
-
-    return (config.tile.height, config.tile.width);
-}
-
-fn get_window_dimensions(world: &mut World) -> (f32, f32) {
-    let config = world.read_resource::<GameConfig>();
-
-    return (config.window.height, config.window.width);
+    return config.tile;
 }

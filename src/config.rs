@@ -15,7 +15,7 @@ impl Default for MapConfig {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 pub struct TileConfig {
     pub height: f32,
     pub width: f32,
@@ -29,6 +29,7 @@ impl Default for TileConfig {
         }
     }
 }
+
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct WindowConfig {
