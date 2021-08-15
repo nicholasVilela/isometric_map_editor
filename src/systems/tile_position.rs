@@ -48,10 +48,10 @@ impl <'s> System<'s> for TilePositionSystem {
                 ui_transform.local_x = ((transform.translation().x - cam_transform.translation().x) / cam_transform.scale().x) * 4.0;
                 ui_transform.local_y = ((transform.translation().y - cam_transform.translation().y) / cam_transform.scale().y) * 4.0;
                 
-                if tile.selected {
+                if sprite_render.sprite_number != 0 && tile.selected {
                     sprite_render.sprite_number = 0;
                 }
-                else {
+                else if sprite_render.sprite_number != 1 && !tile.selected {
                     sprite_render.sprite_number = 1;
                 }
             }

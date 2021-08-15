@@ -55,10 +55,11 @@ impl <'s> System<'s> for InputSystem {
 
         if mouse_left_click {
             if let Some((x, y)) = input.mouse_position() {
-                println!("------START------");
                 for (_, cam_transform) in (&cameras, &transforms).join() {
-                    let world_x = x + cam_transform.translation().x;
-                    let world_y = y + cam_transform.translation().y;
+                    println!("Scale: ({:?}, {:?})", cam_transform.scale().x, cam_transform.scale().y);
+
+                    let world_x = (x - ((200.0) - (cam_transform.translation().x * 4.0)));
+                    let world_y = (y - ((200.0) + (cam_transform.translation().y * 4.0) - ((config.tile.height) * 2.0)));
                     
                     let iso_position = screen_to_map(world_x, world_y, config.tile.width, config.tile.height);
 
@@ -70,16 +71,8 @@ impl <'s> System<'s> for InputSystem {
                             tile.selected = false;
                         }
                     }
-
-                    println!("Mouse Position: ({:?}, {:?})", world_x, world_y);
-                    println!("Grid Position: ({:?}, {:?})", iso_position.x, iso_position.y);
                 }
             }
         }
     }
-}
-
-
-fn point_in_rect(x: f32, y: f32, left: f32, bottom: f32, right: f32, top: f32) -> bool {
-    return x >= left && x <= right && y >= bottom && y <= top
 }
