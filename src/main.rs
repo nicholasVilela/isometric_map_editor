@@ -48,7 +48,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(UiBundle::<StringBindings>::new())?
         // .with(systems::TilePositionSystem::default(), "tile_position_system", &["camera_movement_system"])
         .with(systems::MouseInputSystem::default(), "mouse_input_system", &["input_system",])
-        .with(systems::TileSelectSystem::default(), "tile_select_system", &["mouse_input_system"])
+        .with(systems::TileEditSystem::default(), "tile_edit_system", &["mouse_input_system"])
         .with(systems::FpsSystem::default(), "fps_system", &[]);
 
     let mut game = Application::new(assets_dir, GameState::default(), game_data)?;

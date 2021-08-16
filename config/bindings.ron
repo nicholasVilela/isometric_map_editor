@@ -18,5 +18,8 @@
       "mouse_middle": [[Mouse(Middle)]],
       "mouse_left_click": [[Mouse(Left)]],
       "mouse_right_click": [[Mouse(Right)]],
+
+      "up": [[Key(Up)]],
+      "down": [[Key(Down)]],
     },
 )

@@ -23,9 +23,7 @@ pub fn map_to_screen(x: i32, y: i32, tile_width: f32, tile_height: f32) -> Vecto
 pub fn screen_to_map(x: f32, y: f32, tile_width: f32, tile_height: f32) -> Vector2<i32> {
     let offset_x = x;
     let offset_y = y;
-
-    println!("Offset: ({:?}, {:?})", offset_x, offset_y);
-
+    
     let tile_width_half = tile_width / 2.0;
     let tile_height_half = tile_height / 2.0;
 
