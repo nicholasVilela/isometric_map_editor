@@ -76,14 +76,15 @@ impl MouseInputSystem {
     fn tile_select(&self, cam_transform: &Transform, config: &Read<GameConfig>, tiles: &mut WriteStorage<Tile>, input: &Read<InputHandler<StringBindings>>) {
         if let Some((x, y)) = input.mouse_position() {
             let world_x = x - ((200.0) - (cam_transform.translation().x * 4.0));
-            let world_y = y - ((200.0) + (cam_transform.translation().y * 4.0) - ((config.tile.height) * 2.0));
+            let world_y = y - ((200.0) + (cam_transform.translation().y * 4.0) - ((config.tile.height) * 3.0));
             
-            let iso_position = screen_to_map(world_x, world_y, config.tile.width, config.tile.height);
+            let map_position = screen_to_map(world_x, world_y, config.tile.width, config.tile.height);
+
             for tile in (tiles).join() {
-                if !tile.selected && tile.map_x.unwrap_or(0) == iso_position.x as isize && tile.map_y.unwrap_or(0) == iso_position.y as isize {
+                if !tile.selected && tile.map_x.unwrap_or(0) == map_position.x as isize && tile.map_y.unwrap_or(0) == map_position.y as isize {
                     tile.selected = true;
                 }
-                else if tile.selected && !(tile.map_x.unwrap_or(0) == iso_position.x as isize && tile.map_y.unwrap_or(0) == iso_position.y as isize){
+                else if tile.selected && !(tile.map_x.unwrap_or(0) == map_position.x as isize && tile.map_y.unwrap_or(0) == map_position.y as isize){
                     tile.selected = false;
                 }
             }

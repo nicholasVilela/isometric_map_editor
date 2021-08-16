@@ -115,7 +115,7 @@ fn setup_camera(world: &mut World) {
     let (window_height, window_width) = get_window_dimensions(world);
 
     let mut transform = Transform::default();
-    transform.set_translation_xyz(0.0, 0.0, 1.0);
+    transform.set_translation_xyz(0.0, 0.0, 100.0);
 
     world.create_entity()
         .with(Camera::standard_2d(window_width, window_height))
@@ -141,7 +141,7 @@ fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
             let mut transform = Transform::default();
 
             let tile_iso_position = map_to_screen(x as i32, y as i32, tile.width, tile.height);
-            transform.set_translation_xyz(tile_iso_position.x, tile_iso_position.y, 0.0);
+            transform.set_translation_xyz(tile_iso_position.x, tile_iso_position.y, x as f32 + y as f32);
 
             let ui_text = UiText::new(
                 font_handle.clone(),
@@ -181,7 +181,7 @@ fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
 
         loader.load(
-            "textures/sprite_sheet_2.png",
+            "textures/sprite_sheet_3.png",
             ImageFormat::default(),
             (),
             &texture_storage,
@@ -190,7 +190,7 @@ fn load_sprite_sheet(world: &mut World) -> Handle<SpriteSheet> {
 
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     return loader.load(
-        "textures/sprite_sheet_2.ron",
+        "textures/sprite_sheet_3.ron",
         SpriteSheetFormat(texture_handle),
         (),
         &sprite_sheet_store,
