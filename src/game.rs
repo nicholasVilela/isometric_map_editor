@@ -48,9 +48,7 @@ pub struct GameState {
 
 impl SimpleState for GameState {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
-        let mut world = data.world;
-
-        world.register::<Tile>();
+        let world = data.world;
 
         self.sprite_sheet_handle
             .replace(load_sprite_sheet(world));
@@ -64,8 +62,6 @@ impl SimpleState for GameState {
     }
 
     fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
-        let mut world = &data.world;
-
         return Trans::None;
     }
 }
