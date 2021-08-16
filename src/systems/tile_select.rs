@@ -1,30 +1,13 @@
 use amethyst::{
-    derive::SystemDesc,
-    ecs::{ParJoin, WriteStorage, ReadStorage, System, SystemData, Read, Join},
-    utils::{
-        fps_counter::FpsCounter
-    },
-    ui::{UiText, UiTransform},
-    renderer::{
-        SpriteRender,
-    },
-    core::{
-        transform::{Transform},
-    },
-    renderer::{
-        Camera
-    },
+    ecs::{ParJoin, WriteStorage, ReadStorage, System, SystemData,},
+    renderer::{SpriteRender,},
+    derive::{SystemDesc,},
 };
 
 use rayon::prelude::*;
 
 use crate::game::{
     tile::Tile,
-    util::{
-        map_to_screen,
-        screen_to_map,
-        config::GameConfig
-    }
 };
 
 

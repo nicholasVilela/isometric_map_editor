@@ -46,8 +46,8 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with_bundle(FpsCounterBundle::default())?
         .with_bundle(UiBundle::<StringBindings>::new())?
-        .with(systems::MouseInputSystem::default(), "mouse_input_system", &["input_system",])
         // .with(systems::TilePositionSystem::default(), "tile_position_system", &["camera_movement_system"])
+        .with(systems::MouseInputSystem::default(), "mouse_input_system", &["input_system",])
         .with(systems::TileSelectSystem::default(), "tile_select_system", &["mouse_input_system"])
         .with(systems::FpsSystem::default(), "fps_system", &[]);
 

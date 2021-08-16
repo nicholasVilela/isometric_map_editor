@@ -7,13 +7,10 @@ use amethyst::{
         SystemData,
         System,
         Read,
-        ParJoin,
     },
     core::{
         transform::{Transform},
         timing::Time,
-        math::{Point2, Vector2},
-        geometry::Plane,
         math::Vector3,
     },
     input::{
@@ -21,18 +18,13 @@ use amethyst::{
         StringBindings,
     },
     renderer::{
-        SpriteRender,
         Camera,
     },
 };
 
-
-use rayon::prelude::*;
-
 use crate::game::{
     tile::Tile,
     util::{
-        map_to_screen,
         screen_to_map,
         config::GameConfig,
     }
@@ -101,7 +93,6 @@ impl MouseInputSystem {
 
 impl <'s> System<'s> for MouseInputSystem {
     type SystemData = (
-        WriteStorage<'s, SpriteRender>,
         WriteStorage<'s, Transform>,
         WriteStorage<'s, Tile>,
         ReadStorage<'s, Camera>,
@@ -110,7 +101,7 @@ impl <'s> System<'s> for MouseInputSystem {
         Read<'s, Time>,
     );
 
-    fn run(&mut self, (mut sprite_renders, mut transforms, mut tiles, cameras, input, config, time): Self::SystemData) {
+    fn run(&mut self, (mut transforms, mut tiles, cameras, input, config, time): Self::SystemData) {
         let left_click = input.action_is_down("mouse_left_click").unwrap_or(false);
         let middle_down = input.action_is_down("mouse_middle").unwrap_or(false);
         let mouse_wheel = input.axis_value("mouse_wheel").unwrap_or(0.0);

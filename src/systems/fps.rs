@@ -7,7 +7,6 @@ use amethyst::{
     ui::{UiText, UiTransform}
 };
 
-
 #[derive(SystemDesc, Default)]
 pub struct FpsSystem;
 
@@ -18,9 +17,9 @@ impl <'s> System<'s> for FpsSystem {
         Read<'s, FpsCounter>,
     );
 
-    fn run(&mut self, (mut texts, transforms, fps): Self::SystemData) {
-        for (ui_text, transform) in (&mut texts, &transforms).join() {
-            if transform.id == "fps" {
+    fn run(&mut self, (mut ui_texts, ui_transforms, fps): Self::SystemData) {
+        for (ui_text, ui_transform) in (&mut ui_texts, &ui_transforms).join() {
+            if ui_transform.id == "fps" {
                 ui_text.text = (fps.frame_fps() as i64).to_string();
             }
         }

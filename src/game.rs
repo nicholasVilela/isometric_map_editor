@@ -23,9 +23,6 @@ use amethyst::{
         Texture,
         SpriteRender,
     },
-    shred::{
-        Fetch,
-    },
 };
 
 #[path = "./tile.rs"]
