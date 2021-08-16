@@ -42,7 +42,7 @@ impl Default for MouseInputSystem {
     fn default() -> Self {
         return MouseInputSystem {
             move_speed: 30.0,
-            zoom_step: 0.2,
+            zoom_step: 0.1,
             zoom_min: 0.8,
             zoom_max: 30.0,
         };
