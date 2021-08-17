@@ -46,7 +46,7 @@ impl <'s> System<'s> for TileEditSystem {
                         sprite_render.sprite_number = target_sprite_number;
                     }
                     else {
-                        sprite_render.sprite_number = 0;
+                        sprite_render.sprite_number = 1;
                     }
                 }
                 else if !holding_up {
@@ -59,7 +59,7 @@ impl <'s> System<'s> for TileEditSystem {
 
                     let target_sprite_number = sprite_render.sprite_number - 1;
 
-                    if target_sprite_number as i32 > -1 as i32 {
+                    if target_sprite_number as i32 > 0 as i32 {
                         sprite_render.sprite_number = target_sprite_number;
                     }
                     else {

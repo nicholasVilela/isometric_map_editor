@@ -124,7 +124,7 @@ fn setup_camera(world: &mut World) {
 }
 
 fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {  
-    let tile_render = SpriteRender::new(sprite_sheet_handle, 0);
+    let tile_render = SpriteRender::new(sprite_sheet_handle, 1);
 
     let (map_height, map_width) = get_map_dimensions(world);
     let tile = get_tile_config(world);
