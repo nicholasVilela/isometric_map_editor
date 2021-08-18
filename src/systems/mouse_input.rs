@@ -7,6 +7,7 @@ use amethyst::{
         SystemData,
         System,
         Read,
+        ParJoin,
     },
     core::{
         transform::{Transform},
@@ -21,6 +22,8 @@ use amethyst::{
         Camera,
     },
 };
+
+use rayon::prelude::*;
 
 use crate::game::{
     tile::Tile,
@@ -80,14 +83,14 @@ impl MouseInputSystem {
             
             let map_position = screen_to_map(world_x, world_y, config.tile.width, config.tile.height);
 
-            for tile in (tiles).join() {
+            (tiles).par_join().for_each(|tile| {
                 if !tile.selected && tile.map_x.unwrap_or(0) == map_position.x as isize && tile.map_y.unwrap_or(0) == map_position.y as isize {
                     tile.selected = true;
                 }
                 else if tile.selected && !(tile.map_x.unwrap_or(0) == map_position.x as isize && tile.map_y.unwrap_or(0) == map_position.y as isize){
                     tile.selected = false;
                 }
-            }
+            });
         }
     }
 }
@@ -107,12 +110,14 @@ impl <'s> System<'s> for MouseInputSystem {
         let middle_down = input.action_is_down("mouse_middle").unwrap_or(false);
         let mouse_wheel = input.axis_value("mouse_wheel").unwrap_or(0.0);
 
-        for (_cam, cam_transform) in (&cameras, &mut transforms).join() {
-            if left_click {self.tile_select(cam_transform, &config, &mut tiles, &input);}
-
-            if mouse_wheel != 0.0 {self.camera_zoom(cam_transform, mouse_wheel);}
-
-            if middle_down {self.camera_movement(cam_transform, &input, &time);}
+        if left_click || middle_down || mouse_wheel != 0.0 {
+            for (_cam, cam_transform) in (&cameras, &mut transforms).join() {
+                if left_click {self.tile_select(cam_transform, &config, &mut tiles, &input);}
+    
+                if mouse_wheel != 0.0 {self.camera_zoom(cam_transform, mouse_wheel);}
+    
+                if middle_down {self.camera_movement(cam_transform, &input, &time);}
+            }
         }
     }
 }

@@ -10,7 +10,8 @@ use amethyst::{
 pub struct Tile {
     pub map_x: Option<isize>,
     pub map_y: Option<isize>,
-    pub selected: bool
+    pub selected: bool,
+    pub is_select_entity_created: bool,
 }
 
 impl Tile {
@@ -19,6 +20,7 @@ impl Tile {
             map_x: Some(x),
             map_y: Some(y),
             selected: false,
+            is_select_entity_created: false,
         };
     }
 }

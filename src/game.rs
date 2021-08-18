@@ -62,6 +62,7 @@ impl SimpleState for GameState {
     }
 
     fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
+        data.world.maintain();
         return Trans::None;
     }
 }
