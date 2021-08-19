@@ -15,6 +15,10 @@ use rayon::prelude::*;
 
 use crate::game::{
     tile::Tile,
+    util::{
+        map_to_screen,
+        config::GameConfig,
+    },
 };
 
 
@@ -31,17 +35,41 @@ impl <'s> System<'s> for TileEditSystem {
         WriteStorage<'s, Transform>,
         WriteStorage<'s, SpriteRender>,
         Read<'s, InputHandler<StringBindings>>,
-        Read<'s, LazyUpdate>
+        Read<'s, LazyUpdate>,
+        Read<'s, GameConfig>,
     );
 
-    fn run(&mut self, (entities, mut tiles, mut transforms, mut sprite_renders, input, updater): Self::SystemData) {
-        for (tile, transform, sprite_render) in (&mut tiles, &transforms, &mut sprite_renders).join() {
+    fn run(&mut self, (entities, mut tiles, mut transforms, mut sprite_renders, input, updater, config): Self::SystemData) {
+        for (tile, transform, sprite_render) in (&mut tiles, &mut transforms, &mut sprite_renders).join() {
             if tile.selected {
                 if tile.is_select_entity_created {
                     let holding_up = input.action_is_down("up").unwrap_or(false);
                     let holding_down = input.action_is_down("down").unwrap_or(false);
 
-                    
+                    if holding_up && !self.pressed_up {
+                        self.pressed_up = true;
+
+                        tile.map_z = Some((tile.map_z.unwrap_or(0) as i32 + 1) as isize);
+                        let target_tile_transform = map_to_screen(tile.map_x.unwrap_or(0) as i32, tile.map_y.unwrap_or(0) as i32, tile.map_z.unwrap_or(0) as i32, config.tile.width, config.tile.height);
+
+                        transform.set_translation_xyz(target_tile_transform.x, target_tile_transform.y, 0.0);
+                    }
+                    else if !holding_up && self.pressed_up {
+                        self.pressed_up = false;
+                    }
+
+
+                    if holding_down && !self.pressed_down {
+                        self.pressed_down = true;
+
+                        tile.map_z = Some((tile.map_z.unwrap_or(0) as i32 - 1) as isize);
+                        let target_tile_transform = map_to_screen(tile.map_x.unwrap_or(0) as i32, tile.map_y.unwrap_or(0) as i32, tile.map_z.unwrap_or(0) as i32, config.tile.width, config.tile.height);
+
+                        transform.set_translation_xyz(target_tile_transform.x, target_tile_transform.y, 0.0);
+                    }
+                    else if !holding_down && self.pressed_down {
+                        self.pressed_down = false;
+                    }
                 }
                 else {
                     let highlight = entities.create();

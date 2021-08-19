@@ -113,10 +113,8 @@ impl <'s> System<'s> for MouseInputSystem {
         if left_click || middle_down || mouse_wheel != 0.0 {
             for (_cam, cam_transform) in (&cameras, &mut transforms).join() {
                 if left_click {self.tile_select(cam_transform, &config, &mut tiles, &input);}
-    
-                if mouse_wheel != 0.0 {self.camera_zoom(cam_transform, mouse_wheel);}
-    
                 if middle_down {self.camera_movement(cam_transform, &input, &time);}
+                if mouse_wheel != 0.0 {self.camera_zoom(cam_transform, mouse_wheel);}
             }
         }
     }

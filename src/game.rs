@@ -141,7 +141,7 @@ fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
         for x in 0..map_width.floor() as isize {
             let mut transform = Transform::default();
 
-            let tile_iso_position = map_to_screen(x as i32, y as i32, tile.width, tile.height);
+            let tile_iso_position = map_to_screen(x as i32, y as i32, 0, tile.width, tile.height);
             transform.set_translation_xyz(tile_iso_position.x, tile_iso_position.y, x as f32 + y as f32);
 
             let ui_text = UiText::new(
@@ -165,7 +165,7 @@ fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
             );
 
             world.create_entity()
-                .with(Tile::new(x, y))
+                .with(Tile::new(x, y, 0))
                 .with(tile_render.clone())
                 .with(transform)
                 .with(ui_text)
