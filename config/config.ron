@@ -4,8 +4,10 @@
         width : 3.0,
     ),
     tile: (
-        height: 16.0,
+        height: 24.0,
         width : 32.0,
+        surface_height: 16.0,
+        surface_width: 16.0,
     ),
     window: (
         height: 100.0,

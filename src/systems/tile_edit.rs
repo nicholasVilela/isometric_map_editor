@@ -50,7 +50,7 @@ impl <'s> System<'s> for TileEditSystem {
                         self.pressed_up = true;
 
                         tile.map_z = Some((tile.map_z.unwrap_or(0) as i32 + 1) as isize);
-                        let target_tile_transform = map_to_screen(tile.map_x.unwrap_or(0) as i32, tile.map_y.unwrap_or(0) as i32, tile.map_z.unwrap_or(0) as i32, config.tile.width, config.tile.height);
+                        let target_tile_transform = map_to_screen(tile.map_x.unwrap_or(0) as i32, tile.map_y.unwrap_or(0) as i32, tile.map_z.unwrap_or(0) as i32, config.tile);
 
                         transform.set_translation_xyz(target_tile_transform.x, target_tile_transform.y, 0.0);
                     }
@@ -63,7 +63,7 @@ impl <'s> System<'s> for TileEditSystem {
                         self.pressed_down = true;
 
                         tile.map_z = Some((tile.map_z.unwrap_or(0) as i32 - 1) as isize);
-                        let target_tile_transform = map_to_screen(tile.map_x.unwrap_or(0) as i32, tile.map_y.unwrap_or(0) as i32, tile.map_z.unwrap_or(0) as i32, config.tile.width, config.tile.height);
+                        let target_tile_transform = map_to_screen(tile.map_x.unwrap_or(0) as i32, tile.map_y.unwrap_or(0) as i32, tile.map_z.unwrap_or(0) as i32, config.tile);
 
                         transform.set_translation_xyz(target_tile_transform.x, target_tile_transform.y, 0.0);
                     }

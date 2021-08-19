@@ -7,12 +7,12 @@ use amethyst::{
 
 #[path = "./config.rs"]
 pub mod config;
-pub use config::GameConfig;
+pub use config::{GameConfig, TileConfig};
 
 
-// pub fn map_to_screen(x: i32, y: i32, tile_width: f32, tile_height: f32) -> Vector2<f32> {
+// pub fn map_to_screen(x: i32, y: i32, z: i32, tile_width: f32, tile_height: f32) -> Vector2<f32> {
 //     let offset_x = 0.0;
-//     let offset_y = 0.0;
+//     let offset_y = z as f32 * tile_height;
 
 //     let screen_x = offset_x + (x - y) as f32 * (tile_width / 2.0);
 //     let screen_y = offset_y + (x + y) as f32 * (tile_height / -2.0);
@@ -20,12 +20,12 @@ pub use config::GameConfig;
 //     return Vector2::new(screen_x, screen_y);
 // }
 
-pub fn map_to_screen(x: i32, y: i32, z: i32, tile_width: f32, tile_height: f32) -> Vector2<f32> {
+pub fn map_to_screen(x: i32, y: i32, z: i32, config: TileConfig) -> Vector2<f32> {
     let offset_x = 0.0;
-    let offset_y = z as f32 * tile_height;
+    let offset_y = z as f32 * (config.height - config.surface_height);
 
-    let screen_x = offset_x + (x - y) as f32 * (tile_width / 2.0);
-    let screen_y = offset_y + (x + y) as f32 * (tile_height / -2.0);
+    let screen_x = offset_x + (x - y) as f32 * (config.width / 2.0);
+    let screen_y = offset_y + (x + y) as f32 * (config.height / -2.0);
 
     return Vector2::new(screen_x, screen_y);
 }

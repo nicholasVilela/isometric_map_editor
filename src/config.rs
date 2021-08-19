@@ -19,6 +19,9 @@ impl Default for MapConfig {
 pub struct TileConfig {
     pub height: f32,
     pub width: f32,
+
+    pub surface_height: f32,
+    pub surface_width: f32,
 }
 
 impl Default for TileConfig {
@@ -26,6 +29,8 @@ impl Default for TileConfig {
         return TileConfig {
             height: 32.0,
             width: 32.0,
+            surface_height: 32.0,
+            surface_width: 32.0
         }
     }
 }

@@ -23,7 +23,12 @@ use amethyst::{
         Texture,
         SpriteRender,
     },
+    shred::{
+        Fetch,
+    },
 };
+
+use std::ops::Deref;
 
 #[path = "./tile.rs"]
 pub mod tile;
@@ -125,10 +130,10 @@ fn setup_camera(world: &mut World) {
 }
 
 fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {  
-    let tile_render = SpriteRender::new(sprite_sheet_handle, 1);
+    let tile_render = SpriteRender::new(sprite_sheet_handle, 2);
 
     let (map_height, map_width) = get_map_dimensions(world);
-    let tile = get_tile_config(world);
+    let config = world.read_resource::<GameConfig>().tile;
 
     let font_handle = world.read_resource::<Loader>().load(
         "font/square.ttf",
@@ -141,7 +146,7 @@ fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
         for x in 0..map_width.floor() as isize {
             let mut transform = Transform::default();
 
-            let tile_iso_position = map_to_screen(x as i32, y as i32, 0, tile.width, tile.height);
+            let tile_iso_position = map_to_screen(x as i32, y as i32, 0, config);
             transform.set_translation_xyz(tile_iso_position.x, tile_iso_position.y, x as f32 + y as f32);
 
             let ui_text = UiText::new(
