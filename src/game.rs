@@ -147,7 +147,7 @@ fn setup_map(world: &mut World, sprite_sheet_handle: Handle<SpriteSheet>) {
             let mut transform = Transform::default();
 
             let tile_iso_position = map_to_screen(x as i32, y as i32, 0, config);
-            transform.set_translation_xyz(tile_iso_position.x, tile_iso_position.y, x as f32 + y as f32);
+            transform.set_translation_xyz(tile_iso_position.x, tile_iso_position.y, x as f32 + y as f32 + 0.0);
 
             let ui_text = UiText::new(
                 font_handle.clone(),

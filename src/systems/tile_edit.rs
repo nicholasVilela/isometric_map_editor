@@ -52,7 +52,7 @@ impl <'s> System<'s> for TileEditSystem {
                         tile.map_z = Some((tile.map_z.unwrap_or(0) as i32 + 1) as isize);
                         let target_tile_transform = map_to_screen(tile.map_x.unwrap_or(0) as i32, tile.map_y.unwrap_or(0) as i32, tile.map_z.unwrap_or(0) as i32, config.tile);
 
-                        transform.set_translation_xyz(target_tile_transform.x, target_tile_transform.y, 0.0);
+                        transform.set_translation_xyz(target_tile_transform.x, target_tile_transform.y, transform.translation().z + 1.0);
                     }
                     else if !holding_up && self.pressed_up {
                         self.pressed_up = false;
@@ -65,7 +65,7 @@ impl <'s> System<'s> for TileEditSystem {
                         tile.map_z = Some((tile.map_z.unwrap_or(0) as i32 - 1) as isize);
                         let target_tile_transform = map_to_screen(tile.map_x.unwrap_or(0) as i32, tile.map_y.unwrap_or(0) as i32, tile.map_z.unwrap_or(0) as i32, config.tile);
 
-                        transform.set_translation_xyz(target_tile_transform.x, target_tile_transform.y, 0.0);
+                        transform.set_translation_xyz(target_tile_transform.x, target_tile_transform.y, transform.translation().z - 1.0);
                     }
                     else if !holding_down && self.pressed_down {
                         self.pressed_down = false;

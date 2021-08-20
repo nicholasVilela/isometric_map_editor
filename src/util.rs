@@ -25,7 +25,7 @@ pub fn map_to_screen(x: i32, y: i32, z: i32, config: TileConfig) -> Vector2<f32>
     let offset_y = z as f32 * (config.height - config.surface_height);
 
     let screen_x = offset_x + (x - y) as f32 * (config.width / 2.0);
-    let screen_y = offset_y + (x + y) as f32 * (config.height / -2.0);
+    let screen_y = offset_y + (x + y) as f32 * (config.surface_height / -2.0);
 
     return Vector2::new(screen_x, screen_y);
 }
